@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringBootConsoleApplication {
+public class BatchProcessingApplication {
     public static void main(String... args){
-        SpringApplication.run(SpringBootConsoleApplication.class, args);}
+        SpringApplication.run(BatchProcessingApplication.class, args);}
 }

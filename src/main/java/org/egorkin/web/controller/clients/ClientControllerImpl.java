@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class ClientControllerImpl implements ClientController {
-    @Value("${app.clients_api}")
+    @Value("${app.resource.clients}")
     private String load_client_api;
 
     @Override

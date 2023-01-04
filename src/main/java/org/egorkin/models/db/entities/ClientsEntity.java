@@ -10,8 +10,8 @@ import lombok.Data;
 public class ClientsEntity {
     @Id
     @Column(unique = true, nullable = false, name = "client_id")
-    @JsonProperty("id")
     private String clientId;
+    @Column(name = "name")
     private String name;
     private String userName;
     private String email;

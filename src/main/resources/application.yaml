@@ -17,6 +17,6 @@ app:
     csv-folder: '//Users//Mikhail_Egorkin//Documents//Java_Trainings_Project//Gift-Card-Service//src//test//resources//order.csv'
 
 logging:
-  file: logs/gift-card-service.log
+  file: gift-card-service.log
 server:
   port: 8090
