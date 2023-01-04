@@ -1,6 +1,7 @@
 package com.egorkin.configuration;
 
 import com.egorkin.batchprocessing.JobCompletionNotificationListener;
+import com.egorkin.exceptions.IncorrectValueException;
 import com.egorkin.model.datamodel.Order;
 import com.egorkin.processor.OrderItemProcessor;
 import org.springframework.batch.core.Job;
@@ -27,6 +28,9 @@ import javax.sql.DataSource;
 public class BatchConfiguration {
     @Value("${app.resource.csv-file}")
     String file;
+    @Value("${app.batch.chunk-size}")
+    int chunkSize;
+
 
     @Bean
     public FlatFileItemReader<Order> reader() {
@@ -70,7 +74,10 @@ public class BatchConfiguration {
     public Step step1(JobRepository jobRepository,
                       PlatformTransactionManager transactionManager, JdbcBatchItemWriter<Order> writer) {
         return new StepBuilder("step1", jobRepository)
-                .<Order, Order>chunk(10, transactionManager)
+                .<Order, Order>chunk(chunkSize, transactionManager)
+                .faultTolerant()
+                .skip(IncorrectValueException.class)
+                .skipLimit(3)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer)

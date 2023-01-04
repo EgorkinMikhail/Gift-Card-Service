@@ -9,4 +9,6 @@ app:
   resource:
     csv-file: order.csv
     clients: 'https://jsonplaceholder.typicode.com/users'
+  batch:
+    chunk-size: 10
 
