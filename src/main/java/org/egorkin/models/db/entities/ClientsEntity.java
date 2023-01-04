@@ -1,4 +1,4 @@
-package org.egorkin.db.entities;
+package org.egorkin.models.db.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

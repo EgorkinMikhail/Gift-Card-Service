@@ -10,9 +10,11 @@ spring:
     hibernate:
       ddl-auto: none
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
 app:
-  clients_api: 'https://jsonplaceholder.typicode.com/users'
-  csv_folder: /order.csv
+  resource:
+    clients: 'https://jsonplaceholder.typicode.com/users'
+    csv-folder: '//Users//Mikhail_Egorkin//Documents//Java_Trainings_Project//Gift-Card-Service//src//test//resources//order.csv'
 
 logging:
   file: logs/gift-card-service.log
