@@ -1,22 +1,12 @@
 spring:
   application:
     name: gift-card-service
-  datasource:
-    url: jdbc:h2:mem:clients
-    username: admin
-    password: admin
-    driver-class-name: org.h2.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-
-app:
-  resource:
-    clients: 'https://jsonplaceholder.typicode.com/users'
-    csv-folder: '//Users//Mikhail_Egorkin//Documents//Java_Trainings_Project//Gift-Card-Service//src//test//resources//order.csv'
-
 logging:
   file: gift-card-service.log
 server:
   port: 8090
+app:
+  resource:
+    csv-file: order.csv
+    clients: 'https://jsonplaceholder.typicode.com/users'
+

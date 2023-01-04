@@ -5,11 +5,11 @@ databaseChangeLog:
       author: admin
       changes:
         - createTable:
-            tableName: Orders
+            tableName: orders
             columns:
               - column:
                   name: user_id
-                  type: varchar(255)
+                  type: int
                   constraints:
                     primaryKey: true
                     nullable: false
