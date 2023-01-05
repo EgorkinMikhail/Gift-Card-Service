@@ -1,13 +1,11 @@
 package com.egorkin.service;
 
 import com.egorkin.exceptions.IncorrectValueException;
-import com.egorkin.model.datamodel.Address;
-import com.egorkin.model.datamodel.Client;
-import com.egorkin.model.datamodel.Company;
 import com.egorkin.model.datamodel.Order;
 import com.egorkin.model.db.OrdersRepository;
-import com.egorkin.model.db.entities.ClientEntity;
 import com.egorkin.model.db.entities.OrdersEntity;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,11 +15,12 @@ import java.util.Random;
 
 
 @Service
+@RequiredArgsConstructor
 public class ClientWinnerService implements WinnerService<Order> {
-    @Value("${app.winner.amount}")
-    int amount;
     @Autowired
     OrdersRepository ordersRepository;
+    @Value("${app.winner.amount}")
+    int amount;
 
     @Override
     public Order selectWinner() {

@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: gift-card-service
+logging:
+  file: gift-card-service.log
+server:
+  port: 8090
+app:
+  resource:
+    csv-file: order.csv
+    clients: 'https://jsonplaceholder.typicode.com/users'
+  batch:
+    chunk-size: 10
+  winner:
+    amount: 20
+

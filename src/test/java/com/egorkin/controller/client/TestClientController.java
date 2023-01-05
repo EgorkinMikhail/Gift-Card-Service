@@ -1,5 +1,6 @@
 package com.egorkin.controller.client;
 
+import com.egorkin.model.datamodel.Client;
 import com.egorkin.web.clientservice.ClientServiceRest;
 import com.egorkin.web.clientservice.ClientServiceRestImpl;
 import org.junit.Assert;
@@ -25,7 +26,7 @@ public class TestClientController {
 
     @Test
     public void testLoadClientsFromUrl() {
-        List<?> clientsData = clientService.getClientsFromUrl();
+        List<Client> clientsData = clientService.getClientsFromUrl();
         clientsData.forEach(System.out::println);
         Assert.assertFalse(clientsData.isEmpty());
     }
