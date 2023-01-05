@@ -10,10 +10,10 @@
   </parent>
   <groupId>com.egorkin</groupId>
   <artifactId>gift-card-service</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   <name>gift-card-service</name>
   <properties>
-    <java.version>19</java.version>
+    <java.version>17</java.version>
   </properties>
   <dependencies>
     <dependency>
@@ -44,6 +44,11 @@
       <groupId>org.liquibase</groupId>
       <artifactId>liquibase-core</artifactId>
       <version>4.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>5.4</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

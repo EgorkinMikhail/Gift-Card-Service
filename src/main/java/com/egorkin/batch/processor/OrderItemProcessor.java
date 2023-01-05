@@ -1,4 +1,4 @@
-package com.egorkin.processor;
+package com.egorkin.batch.processor;
 
 import com.egorkin.exceptions.IncorrectValueException;
 import com.egorkin.model.datamodel.Order;
@@ -13,7 +13,7 @@ public class OrderItemProcessor implements ItemProcessor<Order, Order> {
     @Override
     public Order process(final Order order) {
         try {
-            final String userId = order.getUserId().toUpperCase();
+            final Integer userId = order.getUserId();
             final Double amount = order.getAmount();
 
             final Order transformedOrder = new Order(userId, amount);

@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Geo {
     @JsonProperty
-    private Integer userId;
+    private String lat;
     @JsonProperty
-    private Double amount;
+    private String lng;
 }

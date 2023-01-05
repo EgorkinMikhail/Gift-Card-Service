@@ -16,3 +16,37 @@ databaseChangeLog:
               - column:
                   name: amount
                   type: numeric(20, 2)
+        - createTable:
+            tableName: clients
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: username
+                  type: varchar(255)
+              - column:
+                  name: email
+                  type: varchar(255)
+              - column:
+                  name: address
+                  type: varchar(4000)
+              - column:
+                  name: phone
+                  type: varchar(25)
+              - column:
+                  name: website
+                  type: varchar(255)
+              - column:
+                  name: company
+                  type: varchar(4000)
+              - column:
+                  name: winner
+                  type: boolean
+                  defaultValueBoolean: false

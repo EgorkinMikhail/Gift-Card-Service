@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Company {
     @JsonProperty
-    private Integer userId;
+    private String name;
     @JsonProperty
-    private Double amount;
+    private String catchPhrase;
+    @JsonProperty
+    private String bs;
 }

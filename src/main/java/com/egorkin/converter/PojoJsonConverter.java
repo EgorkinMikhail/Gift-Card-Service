@@ -16,6 +16,7 @@ public class PojoJsonConverter {
     }
 
     private static ObjectMapper mapper;
+
     private PojoJsonConverter() {
         mapper = new ObjectMapper();
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);

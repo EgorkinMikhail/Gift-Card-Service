@@ -11,4 +11,6 @@ app:
     clients: 'https://jsonplaceholder.typicode.com/users'
   batch:
     chunk-size: 10
+  winner:
+    amount: 20
 

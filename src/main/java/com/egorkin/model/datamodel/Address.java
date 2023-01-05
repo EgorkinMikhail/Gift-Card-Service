@@ -10,9 +10,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Address {
     @JsonProperty
-    private Integer userId;
+    private String street;
     @JsonProperty
-    private Double amount;
+    private String suite;
+    @JsonProperty
+    private String city;
+    @JsonProperty
+    private String zipcode;
+    @JsonProperty
+    private Geo geo;
 }
