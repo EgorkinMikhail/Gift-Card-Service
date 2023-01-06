@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 
 @SpringBatchTest
 @TestPropertySource(locations = {"classpath:application-test.yaml"},
-        properties = {"app.resource.csv-file=target/classes/bad_order.csv",
+        properties = {"app.resource.csv-file=bad_order.csv",
                 "app.resource.clients=https://bad.url.test"})
 @Configuration
 @EnableJpaRepositories("com.egorkin.model.db")

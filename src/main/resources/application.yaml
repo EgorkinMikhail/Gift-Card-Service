@@ -7,7 +7,7 @@ server:
   port: 8090
 app:
   resource:
-    csv-file: 'target/classes/order.csv'
+    csv-file: 'order.csv'
     clients: 'https://jsonplaceholder.typicode.com/users'
   batch:
     chunk-size: 10

@@ -29,6 +29,7 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -37,7 +38,7 @@ import javax.sql.DataSource;
 @Configuration
 public class BatchConfiguration {
     @Value("${app.resource.csv-file}")
-    String FILE_URL;
+    String FILE;
     @Value("${app.batch.chunk-size}")
     int CHUNK_SIZE;
 
@@ -47,7 +48,7 @@ public class BatchConfiguration {
         return new FlatFileItemReaderBuilder<Order>()
                 .name("orderItemReader")
                 .linesToSkip(1)
-                .resource(new FileSystemResource(FILE_URL))
+                .resource(new ClassPathResource(FILE))
                 .delimited()
                 .names("user_id", "amount")
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<Order>() {{

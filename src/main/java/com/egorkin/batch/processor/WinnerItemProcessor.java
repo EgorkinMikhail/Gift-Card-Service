@@ -16,7 +16,7 @@ public class WinnerItemProcessor implements ItemProcessor<Order, Client> {
     public Client process(final Order order) {
         try {
             Client client = clientService.saveClientAsWinnerById(order.getUserId());
-            log.info("selected winner for order (" + order + ") was updated in clients table (" + client + ")");
+            log.info("For order (" + order + ") was updated client (" + client + ")");
             return client;
 
         } catch (Exception e) {

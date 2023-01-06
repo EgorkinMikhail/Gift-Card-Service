@@ -22,10 +22,11 @@ public class WinnerItemReader implements ItemReader<Order> {
         log.info("started Winner Reader");
         if (winnerDataIsNotInitialized()) {
             Order order = clientWinnerService.selectWinner();
-            log.info("selected winner order: {}", order);
+            log.info("selected winner with order: {}", order);
             this.winnerIndex = true;
             return order;
         } else {
+            winnerIndex = false;
             return null;
         }
     }
