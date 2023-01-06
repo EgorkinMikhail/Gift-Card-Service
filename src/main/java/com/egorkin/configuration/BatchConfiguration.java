@@ -37,9 +37,9 @@ import javax.sql.DataSource;
 @Configuration
 public class BatchConfiguration {
     @Value("${app.resource.csv-file}")
-    String file;
+    String FILE_URL;
     @Value("${app.batch.chunk-size}")
-    int chunkSize;
+    int CHUNK_SIZE;
 
     @Bean
     @StepScope
@@ -47,7 +47,7 @@ public class BatchConfiguration {
         return new FlatFileItemReaderBuilder<Order>()
                 .name("orderItemReader")
                 .linesToSkip(1)
-                .resource(new FileSystemResource(file))
+                .resource(new FileSystemResource(FILE_URL))
                 .delimited()
                 .names("user_id", "amount")
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<Order>() {{
@@ -108,7 +108,7 @@ public class BatchConfiguration {
     public Step importOrders(JobRepository jobRepository,
                              PlatformTransactionManager transactionManager, JdbcBatchItemWriter<Order> writer) {
         return new StepBuilder("importOrders", jobRepository)
-                .<Order, Order>chunk(chunkSize, transactionManager)
+                .<Order, Order>chunk(CHUNK_SIZE, transactionManager)
                 .faultTolerant()
                 .skip(IncorrectValueException.class)
                 .skip(FlatFileParseException.class)
@@ -122,11 +122,13 @@ public class BatchConfiguration {
     @Bean
     public Step importClients(JobRepository jobRepository, PlatformTransactionManager transactionManager, JdbcBatchItemWriter<Client> writer) {
         return new StepBuilder("importClients", jobRepository)
-                .<Client, Client>chunk(chunkSize, transactionManager)
+                .<Client, Client>chunk(CHUNK_SIZE, transactionManager)
+                .faultTolerant()
+                .skip(IncorrectValueException.class)
+                .skipLimit(3)
                 .reader(clientReader())
                 .processor(clientProcessor())
                 .writer(writer)
-                .faultTolerant()
                 .build();
     }
 
