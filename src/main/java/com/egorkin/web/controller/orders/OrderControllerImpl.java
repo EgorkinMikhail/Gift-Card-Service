@@ -27,7 +27,6 @@ public class OrderControllerImpl implements OrderController {
     @Override
     @GetMapping("/getAllOrders")
     public ResponseEntity<Object> getAllOrders() throws IOException {
-        List<OrdersEntity> ordersEntityList = ordersRepository.findAll();
-        return new ResponseEntity<>(ordersEntityList, HttpStatus.OK);
+        return new ResponseEntity<>(ordersRepository.findAll(), HttpStatus.OK);
     }
 }

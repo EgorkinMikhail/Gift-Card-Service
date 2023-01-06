@@ -26,4 +26,14 @@ public class ExceptionApiHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(exception.getMessage()));
     }
 
+    @ExceptionHandler(HttpException.class)
+    public ResponseEntity<ErrorMessage> handleHttpException(HttpException exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity.status(exception.getHttpStatus()).body(new ErrorMessage(exception.getMessage()));
+    }
+    @ExceptionHandler(IncorrectValueException.class)
+    public ResponseEntity<ErrorMessage> handleIncorrectValueException(IncorrectValueException exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(exception.getMessage()));
+    }
 }

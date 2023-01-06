@@ -7,11 +7,11 @@ import org.springframework.batch.item.ItemWriter;
 
 
 @Slf4j
-public class CustomItemWriter implements ItemWriter<Client> {
+public class CustomWinnerItemWriter implements ItemWriter<Client> {
 
     @Override
     public void write(Chunk<? extends Client> chunk) throws Exception {
-        log.info("CustomItemWriter write");
+        log.info("CustomWinnerItemWriter write");
         log.info(chunk.getItems().toString());
     }
 

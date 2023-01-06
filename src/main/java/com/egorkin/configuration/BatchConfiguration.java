@@ -1,18 +1,19 @@
 package com.egorkin.configuration;
 
+import com.egorkin.batch.custom.ClientSqlParameterSourceProvider;
+import com.egorkin.batch.listener.JobCompletionNotificationListener;
+import com.egorkin.batch.processor.ClientItemProcessor;
+import com.egorkin.batch.processor.OrderItemProcessor;
 import com.egorkin.batch.processor.WinnerItemProcessor;
 import com.egorkin.batch.reader.ClientItemReader;
-import com.egorkin.batch.custom.ClientSqlParameterSourceProvider;
-import com.egorkin.batch.processor.ClientItemProcessor;
-import com.egorkin.batch.listener.JobCompletionNotificationListener;
 import com.egorkin.batch.reader.WinnerItemReader;
-import com.egorkin.batch.writer.CustomItemWriter;
+import com.egorkin.batch.writer.CustomWinnerItemWriter;
 import com.egorkin.exceptions.IncorrectValueException;
 import com.egorkin.model.datamodel.Client;
 import com.egorkin.model.datamodel.Order;
-import com.egorkin.batch.processor.OrderItemProcessor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
@@ -22,12 +23,13 @@ import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourc
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
@@ -40,10 +42,12 @@ public class BatchConfiguration {
     int chunkSize;
 
     @Bean
+    @StepScope
     public FlatFileItemReader<Order> orderReader() {
         return new FlatFileItemReaderBuilder<Order>()
-                .name("personItemReader")
-                .resource(new ClassPathResource(file))
+                .name("orderItemReader")
+                .linesToSkip(1)
+                .resource(new FileSystemResource(file))
                 .delimited()
                 .names("user_id", "amount")
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<Order>() {{
@@ -97,8 +101,8 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public CustomItemWriter winnerWriter() {
-        return new CustomItemWriter();
+    public CustomWinnerItemWriter winnerWriter() {
+        return new CustomWinnerItemWriter();
     }
     @Bean
     public Step importOrders(JobRepository jobRepository,
@@ -107,6 +111,7 @@ public class BatchConfiguration {
                 .<Order, Order>chunk(chunkSize, transactionManager)
                 .faultTolerant()
                 .skip(IncorrectValueException.class)
+                .skip(FlatFileParseException.class)
                 .skipLimit(3)
                 .reader(orderReader())
                 .processor(orderProcessor())
@@ -130,6 +135,8 @@ public class BatchConfiguration {
         return new StepBuilder("findWinnerStep", jobRepository)
                 .<Order, Client>chunk(1, transactionManager)
                 .faultTolerant()
+                .skip(IncorrectValueException.class)
+                .skipLimit(1)
                 .reader(winnerReader())
                 .processor(winnerProcessor())
                 .writer(winnerWriter())

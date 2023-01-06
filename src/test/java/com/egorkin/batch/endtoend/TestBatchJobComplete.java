@@ -1,4 +1,4 @@
-package com.egorkin.batch;
+package com.egorkin.batch.endtoend;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import javax.sql.DataSource;
 @TestConfiguration
 @SpringBootTest
 @EnableAutoConfiguration
-public class TestBatchClass {
+public class TestBatchJobComplete {
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;

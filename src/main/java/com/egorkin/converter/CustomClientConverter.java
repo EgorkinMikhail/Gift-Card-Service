@@ -15,7 +15,7 @@ public class CustomClientConverter {
             return ourInstance;
     }
 
-    public static Client concertEntityToClientModel(ClientEntity clientEntity) {
+    public static Client convertEntityToClientModel(ClientEntity clientEntity) {
         try {
             final Integer id = clientEntity.getId();
             final String name = clientEntity.getName();
@@ -26,6 +26,25 @@ public class CustomClientConverter {
             final String website = clientEntity.getWebsite();
             final Company company = toPojoValue(clientEntity.getCompany(), Company.class);
             final Boolean winner = clientEntity.getWinner();
+
+            return new Client(id, name, username, email, address, phone, website, company, winner);
+
+        } catch (Exception e) {
+            throw new IncorrectValueException("Error converting ClientEntity: " + e.getMessage());
+        }
+    }
+
+    public static Client transformClientToClientModel(Client client) {
+        try {
+            final Integer id = client.getId();
+            final String name = client.getName();
+            final String username = client.getUsername();
+            final String email = client.getEmail();
+            final Address address = client.getAddress();
+            final String phone = client.getPhone();
+            final String website = client.getWebsite();
+            final Company company = client.getCompany();
+            final Boolean winner = client.getWinner();
 
             return new Client(id, name, username, email, address, phone, website, company, winner);
 
