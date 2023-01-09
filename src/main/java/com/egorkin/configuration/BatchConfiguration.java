@@ -4,10 +4,8 @@ import com.egorkin.batch.custom.ClientSqlParameterSourceProvider;
 import com.egorkin.batch.listener.JobCompletionNotificationListener;
 import com.egorkin.batch.processor.ClientItemProcessor;
 import com.egorkin.batch.processor.OrderItemProcessor;
-import com.egorkin.batch.processor.WinnerItemProcessor;
 import com.egorkin.batch.reader.ClientItemReader;
-import com.egorkin.batch.reader.WinnerItemReader;
-import com.egorkin.batch.writer.CustomWinnerItemWriter;
+import com.egorkin.batch.tasklet.SelectWinnerTaskLet;
 import com.egorkin.exceptions.IncorrectValueException;
 import com.egorkin.model.datamodel.Client;
 import com.egorkin.model.datamodel.Order;
@@ -30,7 +28,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
@@ -92,19 +89,17 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public ItemReader<Order> winnerReader() {
-        return new WinnerItemReader();
+    public SelectWinnerTaskLet selectWinnerTaskLet() {
+        return new SelectWinnerTaskLet();
     }
 
     @Bean
-    public WinnerItemProcessor winnerProcessor() {
-        return new WinnerItemProcessor();
+    public Step selectWinnerStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+        return new StepBuilder("selectWinnerStep", jobRepository)
+                .tasklet(selectWinnerTaskLet(), transactionManager)
+                .build();
     }
 
-    @Bean
-    public CustomWinnerItemWriter winnerWriter() {
-        return new CustomWinnerItemWriter();
-    }
     @Bean
     public Step importOrders(JobRepository jobRepository,
                              PlatformTransactionManager transactionManager, JdbcBatchItemWriter<Order> writer) {
@@ -134,27 +129,14 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public Step findWinnerStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-        return new StepBuilder("findWinnerStep", jobRepository)
-                .<Order, Client>chunk(1, transactionManager)
-                .faultTolerant()
-                .skip(IncorrectValueException.class)
-                .skipLimit(1)
-                .reader(winnerReader())
-                .processor(winnerProcessor())
-                .writer(winnerWriter())
-                .build();
-    }
-
-    @Bean
     public Job GiftCardWinnerServiceJob(JobRepository jobRepository,
-                             JobCompletionNotificationListener listener, Step importOrders, Step importClients, Step findWinnerStep) {
+                                        JobCompletionNotificationListener listener, Step importOrders, Step importClients, Step selectWinnerStep) {
         return new JobBuilder("GiftCardWinnerServiceJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
                 .start(importOrders)
                 .next(importClients)
-                .next(findWinnerStep)
+                .next(selectWinnerStep)
                 .build();
     }
 }

@@ -60,10 +60,10 @@ public class TestBatchSteps {
     }
 
     @Test
-    public void testFindWinnerStep(@Autowired Job job) throws Exception {
+    public void testSelectWinnerStep(@Autowired Job job) throws Exception {
         this.jobLauncherTestUtils.setJob(job);
 
-        JobExecution jobExecution = jobLauncherTestUtils.launchStep("findWinnerStep");
+        JobExecution jobExecution = jobLauncherTestUtils.launchStep("selectWinnerStep");
 
         Assertions.assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
     }
