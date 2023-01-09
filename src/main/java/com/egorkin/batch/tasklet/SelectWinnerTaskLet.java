@@ -14,7 +14,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public class SelectWinnerTaskLet implements Tasklet, InitializingBean {
+public class SelectWinnerTaskLet implements Tasklet {
     @Autowired
     WinnerService<Order> clientWinnerService;
     @Autowired
@@ -35,7 +35,4 @@ public class SelectWinnerTaskLet implements Tasklet, InitializingBean {
         return RepeatStatus.FINISHED;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-    }
 }
