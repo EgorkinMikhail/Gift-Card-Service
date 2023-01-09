@@ -1,5 +1,6 @@
 package com.egorkin.batch.stepscope;
 
+import com.egorkin.exceptions.IncorrectValueException;
 import com.egorkin.model.db.ClientsRepository;
 import com.egorkin.model.db.OrdersRepository;
 import org.junit.jupiter.api.Assertions;
@@ -59,7 +60,7 @@ public class TestBatchStepsWithIncorrectData {
     }
 
     @Test
-    public void testImportClientsStep(@Autowired Job job) throws Exception {
+    public void testImportClientsStepWithBadUrl(@Autowired Job job) throws Exception {
         this.jobLauncherTestUtils.setJob(job);
         this.jdbcTemplate.update("delete from clients");
 
@@ -69,10 +70,13 @@ public class TestBatchStepsWithIncorrectData {
     }
 
     @Test
-    public void testFindWinnerStep(@Autowired Job job) throws Exception {
+    public void testSelectWinnerStepWithBadConfigs(@Autowired Job job) throws Exception {
         this.jobLauncherTestUtils.setJob(job);
-        JobExecution jobExecution = jobLauncherTestUtils.launchStep("findWinnerStep");
-        Assertions.assertTrue(clientsRepository.findWinner().isEmpty());
-        Assertions.assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+        try {
+            JobExecution jobExecution = jobLauncherTestUtils.launchStep("selectWinnerStep");
+        } catch (IncorrectValueException exception) {
+            Assertions.assertEquals("Error winner processing: Client not found by keyId", exception.getMessage());
+            Assertions.assertTrue(clientsRepository.findWinner().isEmpty());
+        }
     }
 }
