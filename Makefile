@@ -31,4 +31,4 @@ save_image:
 	chmod +x ./image/load_image_gift-card-service.sh
 
 docker-run:
-	docker run -it -p 8090:8090 --name=gift-card-service mikhailegorkin/gift-card-service
+	docker run -it -p 8090:8090 -v ${pwd}:/usr/report/orders/ --name=gift-card-service mikhailegorkin/gift-card-service
